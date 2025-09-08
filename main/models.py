@@ -15,6 +15,7 @@ class Product(models.Model):
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
     category = models.CharField(choices=pilihan_category, default='update')
+    is_featured = models.BooleanField
     
     def __str__(self):
         return self.title
