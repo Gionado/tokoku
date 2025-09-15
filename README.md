@@ -176,40 +176,22 @@ fungsi kedua adalah def show_json(request):                             -> untuk
 
 fungsi ketiga adalah def def show_xml_by_id(request, product_id):       -> untuk menampilkan data produk spesifik dalam format XML
     try:    
-        product_item = Product.objects.filter(pk=product_id)            -> Filter Product berdasarkan primary key product_id
-        xml_data = serializers.serialize("xml", product_item)           ->
-        return HttpResponse(xml_data, content_type="application/xml")   ->
+        product_item = Product.objects.filter(pk=product_id)            -> filter Product berdasarkan primary key product_id
+        xml_data = serializers.serialize("xml", product_item)           -> serialize hasil QuerySet (meskipun kosong) menjadi XML
+        return HttpResponse(xml_data, content_type="application/xml")   -> kembalikan XML sebagai response
     except Product.DoesNotExist:                                        
-        return HttpResponse(status=404)                                 ->
+        return HttpResponse(status=404)                                 -> catch exception DoesNotExist dan kembalikan 404
 
 fungsi keempat adalah def def show_json_by_id(request, product_id):     -> untuk menampilkan data produk spesifik dalam format JSON
     try:
-        product_item = Product.objects.get(pk=product_id)               ->
-        json_data = serializers.serialize("json", [product_item])       ->
-        return HttpResponse(json_data, content_type="application/json") ->
+        product_item = Product.objects.get(pk=product_id)               -> filter Product berdasarkan primary key product_id
+        json_data = serializers.serialize("json", [product_item])       -> bungkus objek tunggal di list; lalu diserialisasi ke JSON
+        return HttpResponse(json_data, content_type="application/json") -> kembalikan JSON sebagai response.
     except Product.DoesNotExist:                                        
-        return HttpResponse(status=404)                                 ->
+        return HttpResponse(status=404)                                 -> catch exception DoesNotExist dan kembalikan 404
+
+Langkah terakhir adalah saya melakukan push pada git dan pws untuk menyimpan perubahan
 
 
-
-
-5. Pada tugas kali ini, kita ingin mempelajari apa itu form dan kegunaan data delivery sendiri dengan menggunakan xml, json. Pada tutorial sebelumnya saya sudah mempelajari cara membuat form input data yang menampilkan data aplikasi pada html dan juga belajar cara mengembalikan data dalam bentuk baik xml dan json. 
-- Step pertama yang saya lakukan ada melakukan activation pada virtual environment, setelah itu saya baru mulai mengimplementasikan skeleton (base.html) sebagai kerangka views
-- Mengisi DIRS dengan BASE_DIR / 'templates' sebagai path yang menghubungakan dengan project. Lalu APP_DIRS dijadikan true, hal ini dilakukan agar templates milik app diprioritaskan daripada base_site.html.
-- Menggunakan base.html sebagai template utama, untuk melakukan hal tersebut menambahkan
-{% extends 'base.html' %}
-{% block content %}
-{% endblock content %}
-pada main.html
-- membuat forms.py untuk membuat struktur form yang dapat menerima data Product baru (yang nantinya dapat ditampilkan ada halaman utama)
-- mengubah views.py dan menambahkan fungsi-fungsi untuk create_product (menggunakan is_valid yang sebelumnya dijelaskan) dan show_product, serta menambahkan import baru.
-- mengubah main.html, update code dan menambahkan tombol Add Product, disertai thumbnails dan description product. Selain itu, pada templates juga menambahkan create_product dan product_detail. Create product untuk menambah produk-produk yang ingin ditambahkan sedangkan product_detail berfungsi ketika pengguna klik produk tersebut, yang dimana ketika diklik, pnegguna dapat melihat apa kategori produk tersebut, harganya, rating, dan juga deskripsi full dari produk tersebut.
-- Setelah itu, saya menambahkan beberapa function yang berguna untuk mengembalikan data dalam xml dan json yang saya pelajari dari tutorial yang sebelumnya diberikan. Untuk melakukan hal tersebut, kita perlu membuka views.py dan menambahkan beberapa import dari django.
-ada serializers(untuk translate objek model menjadi format XML dan json) dan httpresponse(parameter data query yang sudah diserialize, di mana akan direturn pada function oyang dibuat pada views.py)
-- Melakukan edit pada urls.py untuk menambahkan import dari function yang sudah dibuat dan menambahkan path, step yang dilakukan sama baik json ataupun xml dengan cara menambahkan:
-from main.views import show_main, create_product, show_product, show_xml
-path('xml/', show_xml, name='show_xml') pada urls.py
-Tentu, hal ini juga berlaku apabila ingin menambahkan show_xml_by_id dan show_json_by_id (cara penambahan pada urls.py sama). Untuk show_xml_by_id dan show_json_by_id memiliki konsep yang sama dengan show_xml atau show_json, hanya ditambahkan parameter id yang berupa input dari user. Jadi, kita bisa dengan bebas mengakses product dengan id yang kita inginkan.
-- Setelah selesai, saya melakukan checking dengan membuka localhost dari produk yang sudah saya tambahkan. Lalu, saya menggunakan postman untuk melihat hasil dari seluruh step yang sudah dilakukan.
-- Setelah melakukan checking, saya melakukan deaktivasi virtual environment dan melakukan commit pada github dan pws.
-6. Feedback tidak ada, menurut saya asistensi untuk tutorial sudah baik dan lumayan bisa di mengerti. 
+# Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
+Tutorial dan penjelasan asdos sudah sangat baik sehingga mempermudah saya untuk lebih mengerti materi dan juga pengerjaan lab
