@@ -7,6 +7,7 @@ https://gionado-gunawan-tokoku.pbp.cs.ui.ac.id/
 https://github.com/Gionado/tokoku.git
 
 
+TUGAS2
 # Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 Membuat sebuah proyek Django baru.
 Untuk membuat  sebuah pryek  Django baru, saya membuat folder baru terlebih dulu, nama folder saya adalah tokoku, kemudian saya membuat virtual environment dengan menjalankan perintah "python -m venv env" dan mengaktifkannya dengan menjalankan perintah "env\Scripts\activate" pada command prompt. Setelah itu, saya membuat file baru bernama requirements.txt untuk menambahkan beberapa dependencies di dalamnya, lalu saya melakukan instalasi terhadap depedencies tersebut dengan menjalankan perintah "pip install -r requirements.txt" setelah mengaktifkan virtual environment, setelah itu baru buat proyek baru Django dengan perintah "django-admin startproject <NamaProyek(proyek saya tokoku)> .". 
@@ -55,7 +56,7 @@ def show_main(request):             -> mengatur permintaan HTTP dan mengembalika
     return render(request, "main.html", context) -> untuk render tampilan main.html dengan menggunakan fungsi render
 
 Lalu pada file html.py yang telah dibuat tambahkan kode/perintah ini,
-<h1>tokoku</h1>
+<!-- <h1>tokoku</h1>
 
 <h5>NPM: </h5>
 <p>{{ npm }}</p>
@@ -63,7 +64,7 @@ Lalu pada file html.py yang telah dibuat tambahkan kode/perintah ini,
 <p>{{ name }}<p>
 <h5>Class: </h5>
 <p>{{ class }}</p>
-sintaks {{...}} digunakan untuk menampilkan nilai dari variabel yang telah didefinisikan dalam context.
+sintaks {{...}} digunakan untuk menampilkan nilai dari variabel yang telah didefinisikan dalam context. -->
 
 
 Saya membuat file urls.py pada folder aplikasi main yang telah terbuat sebelumnya, lalu mengisi file tersebut dengan beberapa hal untuk import path (django.urls) dan show_main (main.views), membuat app_name = 'main' untuk namespace unik URL, dan name='show_main' untuk melakukan reverse URL menggunakan nama. Kemudian pada file urls.py yang berada pada folder proyek, Impor fungsi include dari django.urls dan tambahkan rute URL untuk mengarahkan ke tampilan main di dalam list urlpatterns.
@@ -126,3 +127,9 @@ Django mendorong developer menulis kode yang rapi, aman, dan terstruktu.
 
 # Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
 Tutorial 1 sudah memiliki penjelasan dan arahan yang baik sehingga membuat saya menjadi lebih mengerti
+
+
+
+
+
+TUGAS2
