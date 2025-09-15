@@ -7,7 +7,7 @@ https://gionado-gunawan-tokoku.pbp.cs.ui.ac.id/
 https://github.com/Gionado/tokoku.git
 
 
-TUGAS2
+# TUGAS2
 # Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 Membuat sebuah proyek Django baru.
 Untuk membuat  sebuah pryek  Django baru, saya membuat folder baru terlebih dulu, nama folder saya adalah tokoku, kemudian saya membuat virtual environment dengan menjalankan perintah "python -m venv env" dan mengaktifkannya dengan menjalankan perintah "env\Scripts\activate" pada command prompt. Setelah itu, saya membuat file baru bernama requirements.txt untuk menambahkan beberapa dependencies di dalamnya, lalu saya melakukan instalasi terhadap depedencies tersebut dengan menjalankan perintah "pip install -r requirements.txt" setelah mengaktifkan virtual environment, setelah itu baru buat proyek baru Django dengan perintah "django-admin startproject <NamaProyek(proyek saya tokoku)> .". 
@@ -132,4 +132,84 @@ Tutorial 1 sudah memiliki penjelasan dan arahan yang baik sehingga membuat saya 
 
 
 
-TUGAS2
+# TUGAS2
+# Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+Data delivery adalah proses bagaimana data dikirimkan, ditransfer, atau didistribusikan dari satu sistem ke sistem lain, atau dari backend ke pengguna akhir dengan cara yang aman, baik, dan cepat. Tanpa mekanisme pengiriman data yang baik, platform hanya menyimpan informasi, tapi tidak bisa dipakai oleh pengguna atau layanan lain. Data delivery diperlukan supaya data yang dimiliki platform bisa sampai ke pihak yang membutuhkan (user, modul lain, atau sistem eksternal), dengan cara yang cepat, aman, konsisten, dan efisien.
+
+Dalam konteks platform web dengabn Django, data delivery berarti proses mengirim data dari server ke client (browser) supaya user bisa melihat dan berinteraksi dengan informasi. Data delivery dibutuhkan agar platform web bukan hanya menyimpan data di database, tapi juga menyajikan data ke user. Kalau data hanya ada di server, user tidak akan tahu update terbaru, data delivery memastikan perubahan di database  sampai ke pengguna. Tanpa data delivery, aplikasi web hanya akan menampilkan halaman statis.
+
+
+# Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+Menurut saya, format data delivery yang lebih baik adalah JSON, karena JSON memiliki struktur dan sintaks yang lebih ringkas sehiongga lebih enak dilihat, sedangkan XML lebih verbose (panjang) karena setiap elemen harus buka-tutup tag. Selain itu, JSON lebih mudah dibaca manusia, lebih dekat dengan struktur data di bahasa pemrograman modern (Python dict, JavaScript object, dsb). JSON parsing juga lebih cepat (library sudah built-in di hampir semua bahasa). Alasan-alasan di ataslah yang membuat saya lebih memilih JSON dan juga yang membuat JSON lebih populer dibandingkan XML.
+
+
+# Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+is_valid() adalah method utama pada Django Form/ModelForm yang dipakai untuk mengecek apakah data yang dikirim user valid sesuai aturan form yang didefinisikan. Sehingga method is_valid() sangat berguna dan dibutuhkan untuk menjaga keamanan data (data dari user tidak selalu semua bisa dipercaya), Mencegah error runtime(Kalau field butuh angka tapi user masukkan teks, tanpa validasi program bisa crash), dan Memudahkan developer agar tidak perlu tulis validasi manual untuk setiap field.
+
+
+# Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+csrf_token dibutuhkan untuk mencegah CSRF (Cross-Site Request Forgery), serangan di mana penyerang memaksa browser korban (yang sudah login) mengirim request berbahaya ke web memakai cookie otentikasi korban. Tanpa CSRF protection, attacker bisa membuat korban melakukan aksi yang tidak diinginkan (transfer uang, ganti email, hapus data, dll).
+
+
+# Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+Untuk memenuhi dan mengimplementasikan checklist saya memulai dengan mengimplementasi skeleton sebagai kerangka views, saya membuat folder baru dengan nama templates pada direktori utama proyek dan membuat file baru di dalamnya dengan nama "base.html". "base.html" ini berfungsi untuk menjadi template dasar yang dapat digunakan sebagai kerangka umum untuk halaman web lainnya di dalam proyek. Kemudian saya menambahkan kode pada bagian TEMPLATES di file settings.py, 'DIRS': [BASE_DIR / 'templates'], hal ini berguna untuk mendeteksi file "base.html" sebagai file template yang dapat digunakan.
+
+Langkah selanjutnya adalah membuat form input data, pertama, saya membuat file baru bernama "forms.py" pada folder main, file ini berguna untuk membuat struktur form yang dapat menerima data Produk baru. Saya juga menambahkan beberapa import dan fungsi pada file views.py, saya menambahkan Product.objects.all() untuk mengambil seluruh objek Product yang tersimpan pada database. Saya juga menambahkan fungsi create_product untuk membuat form yang dapat menambahkan data produk dan juga fungsi show_product menggunakan get_object_or_404(Product, pk=id) untuk mengambil objek Product berdasarkan primary key (id) dan mengembalikan halaman 404 jika id tidak ditemukan. Lalu saya mengimport fungsi-fungsi tersebut pada file urls.py pada varabel urlpatterns. 
+
+Kemudian saya melakukan perubahan pada file main.html untuk menampilkan data, 
+{% extends 'base.html' %}                        -> template ini mewarisi (inherit) template induk bernama base.html
+{% block content %} ... {% endblock content %}   -> Ini adalah blok konten yang disediakan oleh base.html.
+saya juga menambahkan beberapa hal seperti tombol "Add Product" tombol "Deskripsi" dan tampilan produk.
+Kemudian saya membuat 2 file yaitu, create_product.html (untuk tampilan  dalam penambahan produk baru) dan product_detail.html (untuk menampilkan detail  produk) Kemudian saya menambahkan entri url proyek pws pada file settings dengan  CSRF_TRUSTED_ORIGINS = [ "https://gionado-gunawan-tokoku.pbp.cs.ui.ac.id" ]
+
+Langkah selanjutnya adalah untuk mengembalikan data dalam XML dan JSON
+Saya memulai dengan mengimport HttpResponse dan serializers pada dile views.py. Kemudian saya membuat 4 fungsi baru pad views.py untuk menyediakan data Produk dalam format XML  dan JSON.
+fungsi pertama adalah def show_xml(request):                            -> untuk menampilkan data dalam format XML
+    product_list = Product.objects.all()                                -> ambil semua record Product dari database dan menghasilkan QuerySet
+    xml_data = serializers.serialize("xml", product_list)               -> konversi QuerySet menjadi string XML 
+    return HttpResponse(xml_data, content_type="application/xml")       -> kembalikan response HTTP berisi XML
+
+fungsi kedua adalah def show_json(request):                             -> untuk menampilkan data dalam format JSON
+    product_list = Product.objects.all()                                -> ambil semua record Product dari database dan menghasilkan QuerySet
+    json_data = serializers.serialize("json", product_list)             -> serialize QuerySet ke format JSON 
+    return HttpResponse(json_data, content_type="application/json")     -> kembalikan response dengan Content-Type: application/json
+
+fungsi ketiga adalah def def show_xml_by_id(request, product_id):       -> untuk menampilkan data produk spesifik dalam format XML
+    try:    
+        product_item = Product.objects.filter(pk=product_id)            -> Filter Product berdasarkan primary key product_id
+        xml_data = serializers.serialize("xml", product_item)           ->
+        return HttpResponse(xml_data, content_type="application/xml")   ->
+    except Product.DoesNotExist:                                        
+        return HttpResponse(status=404)                                 ->
+
+fungsi keempat adalah def def show_json_by_id(request, product_id):     -> untuk menampilkan data produk spesifik dalam format JSON
+    try:
+        product_item = Product.objects.get(pk=product_id)               ->
+        json_data = serializers.serialize("json", [product_item])       ->
+        return HttpResponse(json_data, content_type="application/json") ->
+    except Product.DoesNotExist:                                        
+        return HttpResponse(status=404)                                 ->
+
+
+
+
+5. Pada tugas kali ini, kita ingin mempelajari apa itu form dan kegunaan data delivery sendiri dengan menggunakan xml, json. Pada tutorial sebelumnya saya sudah mempelajari cara membuat form input data yang menampilkan data aplikasi pada html dan juga belajar cara mengembalikan data dalam bentuk baik xml dan json. 
+- Step pertama yang saya lakukan ada melakukan activation pada virtual environment, setelah itu saya baru mulai mengimplementasikan skeleton (base.html) sebagai kerangka views
+- Mengisi DIRS dengan BASE_DIR / 'templates' sebagai path yang menghubungakan dengan project. Lalu APP_DIRS dijadikan true, hal ini dilakukan agar templates milik app diprioritaskan daripada base_site.html.
+- Menggunakan base.html sebagai template utama, untuk melakukan hal tersebut menambahkan
+{% extends 'base.html' %}
+{% block content %}
+{% endblock content %}
+pada main.html
+- membuat forms.py untuk membuat struktur form yang dapat menerima data Product baru (yang nantinya dapat ditampilkan ada halaman utama)
+- mengubah views.py dan menambahkan fungsi-fungsi untuk create_product (menggunakan is_valid yang sebelumnya dijelaskan) dan show_product, serta menambahkan import baru.
+- mengubah main.html, update code dan menambahkan tombol Add Product, disertai thumbnails dan description product. Selain itu, pada templates juga menambahkan create_product dan product_detail. Create product untuk menambah produk-produk yang ingin ditambahkan sedangkan product_detail berfungsi ketika pengguna klik produk tersebut, yang dimana ketika diklik, pnegguna dapat melihat apa kategori produk tersebut, harganya, rating, dan juga deskripsi full dari produk tersebut.
+- Setelah itu, saya menambahkan beberapa function yang berguna untuk mengembalikan data dalam xml dan json yang saya pelajari dari tutorial yang sebelumnya diberikan. Untuk melakukan hal tersebut, kita perlu membuka views.py dan menambahkan beberapa import dari django.
+ada serializers(untuk translate objek model menjadi format XML dan json) dan httpresponse(parameter data query yang sudah diserialize, di mana akan direturn pada function oyang dibuat pada views.py)
+- Melakukan edit pada urls.py untuk menambahkan import dari function yang sudah dibuat dan menambahkan path, step yang dilakukan sama baik json ataupun xml dengan cara menambahkan:
+from main.views import show_main, create_product, show_product, show_xml
+path('xml/', show_xml, name='show_xml') pada urls.py
+Tentu, hal ini juga berlaku apabila ingin menambahkan show_xml_by_id dan show_json_by_id (cara penambahan pada urls.py sama). Untuk show_xml_by_id dan show_json_by_id memiliki konsep yang sama dengan show_xml atau show_json, hanya ditambahkan parameter id yang berupa input dari user. Jadi, kita bisa dengan bebas mengakses product dengan id yang kita inginkan.
+- Setelah selesai, saya melakukan checking dengan membuka localhost dari produk yang sudah saya tambahkan. Lalu, saya menggunakan postman untuk melihat hasil dari seluruh step yang sudah dilakukan.
+- Setelah melakukan checking, saya melakukan deaktivasi virtual environment dan melakukan commit pada github dan pws.
+6. Feedback tidak ada, menurut saya asistensi untuk tutorial sudah baik dan lumayan bisa di mengerti. 
