@@ -195,3 +195,5 @@ Langkah terakhir adalah saya melakukan push pada git dan pws untuk menyimpan per
 
 # Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
 Tutorial dan penjelasan asdos sudah sangat baik sehingga mempermudah saya untuk lebih mengerti materi dan juga pengerjaan lab
+
+
