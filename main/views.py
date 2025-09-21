@@ -36,8 +36,8 @@ def create_product(request):
     form = ProductForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
-        news_entry = form.save(commit = False)
-        news_entry.user = request.user
+        product_entry = form.save(commit = False)
+        product_entry.user = request.user
         form.save()
         return redirect('main:show_main')
     
