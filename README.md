@@ -284,6 +284,6 @@ import HttpResponseRedirect, reverse, dan datetime pada bagian paling atas pada 
 
 Menghubungkan Model Product dengan User
 Saya awali dengan mengimport User pada file "models.py" Kemudian saya menambahkan user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) pada class Product hal ini bertujuan untuk menghubungkan satu produk dengan satu user melalui sebuah relationship. Kemudian saya melakukan migrasi terlebih dahulu (pastikanenv dinyalakan) karena saya melakukan perubahan pada model. Selanjutnya, saya melakukan sedikit perubahan pada fungsi create_product untuk mengisi field user dengan nilai request.user, yaitu pengguna yang sedang login agar etiap objek yang dibuat akan secara otomatis terhubung dengan pengguna yang membuatnya.
-kode yang saya tambahkan adalah news_entry = form.save(commit = False) dan news_entry.user = request.user.
+kode yang saya tambahkan adalah product_entry = form.save(commit = False) dan product_entry.user = request.user.
 Kemudian saya melakukan sedikit perubahan pada fungsishow_main yaitu menambahkan filter_type = request.GET.get("filter", "all") untuk mengfilter produk. Kemudian saya menambahkan tombol filter produk user danallproduk pada file "main.html" dansaya juga  menambahkan nama pemilik produk dan nama user/pengguna yang sedang login di file "main.html"
 
