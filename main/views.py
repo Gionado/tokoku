@@ -19,6 +19,8 @@ def show_main(request):
     filter_type = request.GET.get("filter", "all")
     if filter_type == "all":
         product_list = Product.objects.all()
+    elif filter_type == "featured":
+        product_list = Product.objects.filter(is_featured=True)
     else:
         product_list = Product.objects.filter(user=request.user)
 
@@ -127,3 +129,8 @@ def edit_product(request, id):
     }
 
     return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
