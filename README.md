@@ -133,7 +133,7 @@ Tutorial 1 sudah memiliki penjelasan dan arahan yang baik sehingga membuat saya 
 
 
 
-# TUGAS2
+# TUGAS3
 # Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 Data delivery adalah proses bagaimana data dikirimkan, ditransfer, atau didistribusikan dari satu sistem ke sistem lain, atau dari backend ke pengguna akhir dengan cara yang aman, baik, dan cepat. Tanpa mekanisme pengiriman data yang baik, platform hanya menyimpan informasi, tapi tidak bisa dipakai oleh pengguna atau layanan lain. Data delivery diperlukan supaya data yang dimiliki platform bisa sampai ke pihak yang membutuhkan (user, modul lain, atau sistem eksternal), dengan cara yang cepat, aman, konsisten, dan efisien.
 
@@ -201,7 +201,7 @@ Tutorial dan penjelasan asdos sudah sangat baik sehingga mempermudah saya untuk 
 
 
 
-# TUGAS2
+# TUGAS4
 # Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
 AuthenticationForm di Django adalah salah satu built-in form yang disediakan oleh modul django.contrib.auth.forms.
 Form ini dipakai untuk menangani proses login user. Secara default, AuthenticationForm berisi dua field utama, yaitu username dan password. Ketika form ini divalidasi, Django akan secara otomatis memverifikasi apakah kombinasi username dan password benar serta apakah user masih aktif. Jadi, kita tidak perlu menulis ulang logika otentikasi dasar.
@@ -286,4 +286,85 @@ Menghubungkan Model Product dengan User
 Saya awali dengan mengimport User pada file "models.py" Kemudian saya menambahkan user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) pada class Product hal ini bertujuan untuk menghubungkan satu produk dengan satu user melalui sebuah relationship. Kemudian saya melakukan migrasi terlebih dahulu (pastikanenv dinyalakan) karena saya melakukan perubahan pada model. Selanjutnya, saya melakukan sedikit perubahan pada fungsi create_product untuk mengisi field user dengan nilai request.user, yaitu pengguna yang sedang login agar etiap objek yang dibuat akan secara otomatis terhubung dengan pengguna yang membuatnya.
 kode yang saya tambahkan adalah product_entry = form.save(commit = False) dan product_entry.user = request.user.
 Kemudian saya melakukan sedikit perubahan pada fungsishow_main yaitu menambahkan filter_type = request.GET.get("filter", "all") untuk mengfilter produk. Kemudian saya menambahkan tombol filter produk user danallproduk pada file "main.html" dansaya juga  menambahkan nama pemilik produk dan nama user/pengguna yang sedang login di file "main.html"
+
+
+
+
+
+# TUGAS2
+# Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+1. Inline Style CSS yang ditulis langsung pada atribut elemen HTML sehingga punya prioritas paling tinggi.
+2. ID Selector (#id) lebih kuat dibanding class, attribute, atau element, karena hanya ada satu elemen dengan ID tertentu, maka dianggap sangat spesifik.
+3. Class, Pseudo-class, dan Attribute Selector ketiga hal ini berada pada level yang sama, bisa dipakai beberapa elemen tapi tidak sekuat ID.
+4. Element Selector dan Pseudo-element Selector, bisa mencakup banyak elemen sekaligus.
+5. !important (override semua), namun bukan bagian dari sistem specificity, tapi sebuah flag (penanda khusus) yang kita tambahkan untuk memaksa aturan tertentu mengalahkan aturan lain, meskipun specificity-nya lebih rendah.
+
+
+# Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+Responsive design adalah teknik membuat website yang dimana tampilannya dapat menyesuaikan sesuai dengan ukuran layar device yang digunakan.
+Responsive design menjadi konsep yang penting karena dapat meningkatkan user experience dimana misalnya user menggunakan device seperti handphone dengan layar yang kecil, dengan adanya responsive design web dapat lebih nyaman digunakan (teks yang jelas, tombol yang mudah diklik, dll). Selain itu, responsive design juga meningkatkan fleksibilitas dan efisiensi dimana satu kode basis bisa dipakai di semua perangkat, tanpa bikin versi berbeda.
+
+Contoh Website yang sudah menerapkan responsif design
+Instagram, karena foto dan feed otomatis sudah menyesuaikan layar, sedangkan di desktop ada sidebar, di HP layout berubah lebih ramping, untuk memberikan user experience yang lebih baik. Tokopedia juga sudah menerapkan responsive design, karena grid produk bisa menyesuaikan device yang digunakan, di desktop tampil beberapa kolom, sedangkan di HP biasanya 2 kolom agar nyaman dilihat.
+
+Contoh Website yang belum menerapkan responsif design
+Website lama sekolah/kampus
+Biasanya dibuat dengan layout fixed size. Di HP, teks jadi sangat kecil, tabel tidak muat, pengguna harus scroll horizontal maupun vertikal untuk membaca. Biasanya website sekolah/kampus yang lama ini belum diperbarui yang dimana sering dibuat hanya untuk layar komputer, belum mempertimbangkan akses mobile. Juga terdapat situs lama pemerintah, banyak situs resmi instansi pemerintah memakai template jadul yang hanya cocok di desktop, formulir dan menu sering tidak menyesuaikan layar kecil, hal ini karena pengembangan tidak fokus ke UX, hanya sekadar “ada website”, dan jarang diperbarui sesuai standar modern.
+
+
+# Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+Margin
+Margin digunakan untuk mengatur jarak antara elemen dengan elemen lain di sekitarnya, berfungsi untuk memberi ruang antar elemen supaya tidak saling menempel. Contoh implementasi: div { margin: 20px; }
+
+Border
+Merupakan garis yang mengelilingi content dan elemen, border memiliki warna, ketebalan, tipe (solid, dashed, dotted), berguna untuk memberi batas visual, bisa juga untuk desain. Contoh implementasi: div class="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 form-style"
+
+Padding
+Merupakan karak antara isi elemen (content) dengan border, berguna untuk memberi ruang agar konten tidak menempel langsung ke border. Contoh implementasi: div { padding: 15px; }
+
+
+# Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+Flexbox digunakan untuk mengatur layout 1 dimensi (searah, entah horizontal atau vertical). Elemen-elemen anak (flex items) diatur secara fleksibel di dalam kontainer (flex container). Berguna untuk navbar, button group, card list yang ditata sejajar.
+Properti utama:
+display: flex;   mengaktifkan flexbox pada parent.
+flex-direction   menentukan arah (row, column, row-reverse, column-reverse).
+justify-content  mengatur perataan horizontal (start, center, space-between, dll.).
+align-items      mengatur perataan vertikal.
+flex-wrap        apakah item boleh turun ke baris berikutnya.
+
+Grid digunakan untuk mengatur layout 2 dimensi (baris dan kolom). Elemen anak bisa ditempatkan secara eksplisit pada grid tertentu. Berguna untuk layout halaman penuh, dashboard, atau galeri foto.
+Properti utama:
+display: grid;                              mengaktifkan grid pada parent.
+grid-template-columns & grid-template-rows  menentukan jumlah & ukuran kolom/baris.
+gap                                         jarak antar grid.
+grid-column & grid-row                      menentukan posisi item.
+
+
+# Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+Untuk mengimplementasi checklist di atas saya mengawali dengan menambahkan framework CSS Tailwind ke aplikasi. Saya memulai dengan menambahkan tag meta name="viewport" pada file "base.html" hal ini saya lakukan agar web aplikasi dapat menyesuaikan ukuran perangkat yang digunakan user saat membuka web tersebut (responsive web design), kemudian saya menyambungkan template django dengan tailwind dengan cara menambahkan script cdn tailwind di bagian head pada file "base.html" (script src="https://cdn.tailwindcss.com").
+
+Memberi style pada aplikasi dengan tailwind dan juga external CSS
+Langkah selanjutnya adalah untuk memberi style pada aplikasi dengan tailwind dan juga external CSS. Sebelum saya styling saya menambahkan middleware WhiteNoise pada file "settings.py" hal ini berguna agar django dapat mengelola file statis secara otomatis dalam mode produksi tanpa perlu konfigurasi yang kompleks, serta membuat file statis tersebut bisa diakses di deployment. Saya juga mengubah konfigurasi pada STATIC_URL, STATIC_ROOT, STATICFILES_DIRS agar merujuk ke /static root project pada mode production.
+
+Kemudian saya melakukan styling dengan membuat folder baru yaitu folder css dan menambah file baru yaitu "global.css" untuk custom atau style css. Setelah itu, saya menghubungkan tailwind dan file tersebut dengan menambahkan file tersebut pada file "base.html". Saya juga menambahkan kode untuk styling pada file "global.css" agar sesuai dengan kustomisasi yang saya inginkan, misalnya seperti border warna coklat dan sudut yang melengkung.
+
+Menambahkan navbar pada aplikasi
+Saya melanjutkan dengan menambahkan navbar pada aplikasi untuk menavigasi berbagai halaman atau fitur yang saya ingin tampilkan. Saya memulai dengan membuat file baru bernama "navbar.html" pada folder templates, kemudian saya melakukan kustomisasi file navbar tersebut dengan menggunakan Tailwind CSS, beberapa contoh hal yang saya lakukan adalah Struktur navbar terdiri dari title di kiri, menu navigasi di tengah, dan user section di kanan. Kemudian saya menautkan file navbar pada file "main.html" {% include 'navbar.html' %}.
+
+Menambahkan fungsi untuk mengedit product
+Langkah selanjutnya adalah saya menambahkan fungsi untuk mengedit produk (nama produk, gambar, deskripsi, dan harga), saya lakukan dengan menambahkan fungsi baru pada file "views.py" yaitu fungsi edit_product. Kemudian saya juga membuat file html baru untuk menunjukan halaman html edit_product pada folder main/templates dengan nama "edit_product.html", saya juga menambahkan kustomisasi menggunakan Tailwind CSS dengan merubah beberapa hal seperti posisi dan ukuran text, warna text, dan warna button. Jangan lupa juga untuk menghubungkan fungsi ini ke url path di file "urls.py" dan menambahkan fiturnya pada "main.html".
+
+Menambahkan fungsi untuk menghapus product
+Langkah selanjutnya adalah saya menambahkan fungsi untuk menghapus produk, saya lakukan dengan menambahkan fungsi baru pada file "views.py" yaitu fungsi delete_product, saya juga menambahkan kustomisasi menggunakan Tailwind CSS dengan merubah beberapa hal seperti posisi dan ukuran text, warna text, dan warna button. Jangan lupa juga untuk menghubungkan fungsi ini ke url path di file "urls.py" dan menambahkan fiturnya pada "main.html".
+
+Styling halaman login, register, detail product, dan create product
+Untuk mengstyling halaman-halamn tersebut, saya menimpa file html dari halaman-halaman tersebut dengan kustomisasi dengan menggunakan Tailwind CSS. Beberapa contoh perubahan/kustomisasi yang saya lakukan adalah warna text, warna button, warna border, dan pada detail product saya menyesuaikan ukuran gambar agar ukurannya sesuai dengan gambar aslinya, saya juga menambahkan border pada gambarnya.
+
+Styling home
+Saya melakukan beberapa perubahan yang cukup banyak pada halaman homee yaitu dengan menambahkan file "card_product.html" file ini berguna untuk menampilkan suatu gambaran produk dalam rupa kartu pada home page. Saya juga menambahkan fitur sorting untuk product yang berstatus featured pada halaman home. Selain itu, saya juga menambahkan gambar berupa file "no-product.png" untuk ditunjukkan ketiga filter (all products, my products, featured product) belum memiliki product, kemudian saya menghubungkannya pada file "main.html".
+
+
+
+
+
 
