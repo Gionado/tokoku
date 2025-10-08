@@ -11,38 +11,85 @@
   </head>
 
   <script>
-  function showToast(message, duration = 3000) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.remove('hidden');
-    toast.style.opacity = 1;
+    // --- Toast Notification ---
+    function showToast(message, duration = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toast.style.opacity = 1;
 
-    setTimeout(() => {
-      toast.style.opacity = 0;
-      setTimeout(() => toast.classList.add('hidden'), 500);
-    }, duration);
-  }
-
-  // Cek apakah ada pesan dari localStorage (setelah redirect login/register)
-  document.addEventListener("DOMContentLoaded", () => {
-    const msg = localStorage.getItem("toastMessage");
-    if (msg) {
-      showToast(msg);
-      localStorage.removeItem("toastMessage");
+      setTimeout(() => {
+        toast.style.opacity = 0;
+        setTimeout(() => toast.classList.add('hidden'), 500);
+      }, duration);
     }
-  });
+
+    // --- CSRF Token Helper ---
+    // Moved from modal.html to be globally available
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // --- Event Listeners on Page Load ---
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check for toast messages from redirects (e.g., after registration)
+      const msg = localStorage.getItem("toastMessage");
+      if (msg) {
+        showToast(msg);
+        localStorage.removeItem("toastMessage");
+      }
+
+      // --- AJAX Logout Handler ---
+      const logoutButton = document.getElementById('logout-button');
+      if (logoutButton) {
+        logoutButton.addEventListener('click', async (e) => {
+          e.preventDefault(); // Prevent the link from navigating directly
+
+          try {
+            const response = await fetch("{% url 'main:logout' %}", {
+              method: 'POST', // Use POST for actions that change state
+              headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Requested-With': 'XMLHttpRequest', // Helps identify AJAX requests on the server
+              },
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              showToast(data.message);
+              // Wait for the toast to be visible before redirecting
+              setTimeout(() => {
+                window.location.href = data.redirect_url;
+              }, 1500); 
+            } else {
+              showToast('Logout failed. Please try again.');
+            }
+          } catch (error) {
+            console.error('Error during logout:', error);
+            showToast('An unexpected error occurred during logout.');
+          }
+        });
+      }
+    });
   </script>
 
   <body>
-
-    <div id="toast"</div>
-
-      {% block content %}
-
-      {% endblock %}
-
-      {% include 'toast.html' %}
-
-      {% include 'modal.html' %}
+    <div id="toast"></div>
+    {% block content %}
+    {% endblock %}
+    {% include 'toast.html' %}
+    {% include 'modal.html' %}
   </body>
 </html>

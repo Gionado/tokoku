@@ -221,15 +221,22 @@ def login_user(request):
     return render(request, 'login.html', {'form': AuthenticationForm()})
 
 def logout_user(request):
+    """
+    Logs the user out and returns a JSON response for AJAX calls.
+    """
+    user_name = request.user.username
     logout(request)
     
-    # Redirect dengan toast message
-    params = urlencode({
-        'toast': 'You have been logged out successfully.',
-        'toast_type': 'See you again!'
+    # Prepare the JSON response
+    response = JsonResponse({
+        'success': True,
+        'message': f'You have been logged out successfully. See you again, {user_name}!',
+        'redirect_url': reverse('main:login') # Provide the URL to redirect to
     })
-    response = HttpResponseRedirect(f"{reverse('main:login')}?{params}")
+    
+    # Delete the cookie from the response object before sending it
     response.delete_cookie('last_login')
+    
     return response
 
 def edit_product(request, id):
