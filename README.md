@@ -364,7 +364,36 @@ Styling home
 Saya melakukan beberapa perubahan yang cukup banyak pada halaman homee yaitu dengan menambahkan file "card_product.html" file ini berguna untuk menampilkan suatu gambaran produk dalam rupa kartu pada home page. Saya juga menambahkan fitur sorting untuk product yang berstatus featured pada halaman home. Selain itu, saya juga menambahkan gambar berupa file "no-product.png" untuk ditunjukkan ketiga filter (all products, my products, featured product) belum memiliki product, kemudian saya menghubungkannya pada file "main.html". Saya juga melakukan beberapa perubahan terhadap template pada card product yaitu saya menambahkan efek zoom dan shadow saat hover kursor ke card product dan juga saya melakukan perubahan pada tombol read more pada card agar lebih tampak seperti button.
 
 
+# TUGAS6
+# Apa perbedaan antara synchronous request dan asynchronous request?
+Synchronous request adalah permintaan ke server yang dilakukan secara berurutan. Artinya, ketika sebuah request dikirim, browser harus menunggu respons dari server terlebih dahulu sebelum bisa menjalankan kode berikutnya. Akibatnya, jika proses di server memakan waktu lama, halaman akan tampak “diam” atau tidak merespons. Contohnya seperti ketika pengguna mengirim form dan seluruh halaman direload untuk menampilkan hasil.
+
+Sebaliknya, asynchronous request tidak menunggu respons dari server untuk melanjutkan eksekusi kode. Browser tetap bisa menjalankan proses lain sambil menunggu jawaban dari server di latar belakang. AJAX (Asynchronous JavaScript and XML) bekerja dengan cara ini, sehingga memungkinkan halaman web memperbarui sebagian konten tanpa perlu memuat ulang seluruh halaman. Dengan cara ini, pengguna merasakan pengalaman yang lebih cepat dan interaktif.
 
 
+# Bagaimana AJAX bekerja di Django (alur request–response)?
+Ketika pengguna melakukan suatu aksi di halaman web—misalnya menekan tombol “Tambah ke Keranjang”—JavaScript akan menangkap aksi itu dan mengirimkan permintaan AJAX ke server Django. Permintaan ini bisa berupa POST atau GET request yang ditujukan ke salah satu fungsi view di Django.
+
+Django kemudian menerima request tersebut, memproses data yang dikirim, dan mengembalikan respons dalam format JSON, bukan halaman HTML utuh seperti pada request biasa. Setelah itu, JavaScript di sisi pengguna menerima JSON response ini dan memperbarui tampilan halaman secara langsung, misalnya menambah jumlah barang di ikon keranjang tanpa harus me-reload halaman.
+
+Jadi, alurnya bisa diringkas seperti ini: pengguna melakukan aksi -> JavaScript mengirim AJAX request -> Django memproses data dan mengirim JSON response -> JavaScript memperbarui tampilan halaman secara dinamis.
 
 
+# Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+AJAX memberikan banyak keuntungan dibandingkan render biasa. Karena tidak perlu me-reload seluruh halaman, prosesnya menjadi jauh lebih cepat dan efisien. Pengguna bisa melihat perubahan di layar secara langsung tanpa menunggu halaman baru dimuat.
+
+Selain itu, AJAX membuat pengalaman pengguna terasa lebih modern dan interaktif—misalnya untuk fitur pencarian langsung, notifikasi, komentar, atau penambahan produk ke keranjang belanja. Dengan hanya mengirim data yang dibutuhkan (bukan seluruh HTML), AJAX juga menghemat bandwidth dan mempercepat waktu respons server.
+
+
+# Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+Keamanan tetap sangat penting saat menggunakan AJAX untuk proses sensitif seperti login dan register. Pertama, pastikan Django tetap menggunakan CSRF token di setiap request AJAX agar terhindar dari serangan Cross-Site Request Forgery. Token ini bisa dikirim melalui header X-CSRFToken di JavaScript.
+
+Kedua, gunakan HTTPS agar data seperti username dan password terenkripsi selama proses pengiriman. Ketiga, semua validasi input tetap harus dilakukan di sisi server, bukan hanya di JavaScript, karena pengguna bisa saja memanipulasi request mereka.
+
+Selain itu, pastikan endpoint login dan register hanya menerima metode POST, bukan GET, untuk mencegah kebocoran data sensitif. Terakhir, kirim respons yang minimal, misalnya hanya status sukses atau gagal, tanpa menyertakan data pribadi pengguna di dalam JSON.
+
+
+# Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+AJAX sangat meningkatkan pengalaman pengguna pada sebuah website. Karena AJAX memungkinkan pembaruan konten tanpa memuat ulang halaman, pengguna merasakan kecepatan dan kelancaran interaksi yang jauh lebih baik. Misalnya, ketika menekan tombol “Like” atau menambahkan item ke keranjang, hasilnya langsung muncul tanpa mengganggu aktivitas lain di halaman.
+
+Selain itu, AJAX memungkinkan website memberikan feedback langsung kepada pengguna, seperti menampilkan indikator loading, pesan sukses, atau notifikasi error dengan cepat. Hal ini membuat website terasa lebih responsif, dinamis, dan menyerupai aplikasi modern (seperti SPA — Single Page Application). Secara keseluruhan, penggunaan AJAX membuat interaksi pengguna terasa lebih natural, cepat, dan nyaman.

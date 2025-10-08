@@ -6,9 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% block meta %} {% endblock meta %}
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
   </head>
+
+  <script>
+  function showToast(message, duration = 3000) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    toast.style.opacity = 1;
+
+    setTimeout(() => {
+      toast.style.opacity = 0;
+      setTimeout(() => toast.classList.add('hidden'), 500);
+    }, duration);
+  }
+
+  // Cek apakah ada pesan dari localStorage (setelah redirect login/register)
+  document.addEventListener("DOMContentLoaded", () => {
+    const msg = localStorage.getItem("toastMessage");
+    if (msg) {
+      showToast(msg);
+      localStorage.removeItem("toastMessage");
+    }
+  });
+  </script>
+
   <body>
-    {% block content %} {% endblock content %}
+
+    <div id="toast"</div>
+
+      {% block content %}
+
+      {% endblock %}
+
+      {% include 'toast.html' %}
+
+      {% include 'modal.html' %}
   </body>
 </html>

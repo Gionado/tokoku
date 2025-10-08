@@ -39,7 +39,7 @@
         </div>
       {% endif %}
 
-      <form method="POST" action="" class="space-y-5">
+      <form id="registerForm" method="POST" action="" class="space-y-5">
         {% csrf_token %}
         
         <div>
@@ -81,6 +81,40 @@
           Create Account
         </button>
       </form>
+
+      <script>
+      const registerForm = document.getElementById('registerForm');
+
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(registerForm);
+
+        try {
+          const response = await fetch("{% url 'main:register' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+            },
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showToast(data.message, 'success');
+            setTimeout(() => {
+              window.location.href = data.redirect_url + '?toast=' + encodeURIComponent(data.message);
+            }, 1000);
+          } else {
+            showToast(data.message || 'Registration failed', 'error');
+          }
+
+        } catch (error) {
+          console.error(error);
+          showToast('Something went wrong while registering', 'error');
+        }
+      });
+      </script>
 
       <!-- Messages Display -->
       {% if messages %}

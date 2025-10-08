@@ -38,7 +38,7 @@
         </div>
       {% endif %}
 
-      <form method="POST" action="" class="space-y-6">
+      <form id="loginForm" method="POST" action="" class="space-y-6">
         {% csrf_token %}
         
         <div>
@@ -69,6 +69,41 @@
           Sign In
         </button>
       </form>
+      
+      <script>
+      const loginForm = document.getElementById('loginForm');
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(loginForm);
+        
+        try {
+          const response = await fetch("{% url 'main:login' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+            },
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showToast(data.message, 'success');
+            setTimeout(() => {
+              window.location.href = data.redirect_url + '?toast=' + encodeURIComponent(data.message);
+            }, 1000);
+          } else {
+            showToast(data.message || 'Login failed', 'error');
+          }
+
+        } catch (error) {
+          console.error(error);
+          showToast('Something went wrong while logging in', 'error');
+        }
+      });
+      </script>
 
       <!-- Messages Display -->
       {% if messages %}
@@ -94,7 +129,7 @@
       <div class="mt-6 text-center pt-6 border-t border-gray-200">
         <p class="text-gray-500 text-sm">
           Don't have an account? 
-          <a href="{% url 'main:register' %}" class="text-yellow-800 hover:text-yellow-900 font-medium">
+          <a href="javascript:void(0);" onclick="showRegisterModal()" class="text-yellow-800 hover:text-yellow-900 font-medium">
             Register Now
           </a>
         </p>
@@ -102,4 +137,17 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const params = new URLSearchParams(window.location.search);
+  const toastMessage = params.get('toast');
+  const toastType = params.get('toast_type');
+
+  if (toastMessage) {
+    showToast(toastMessage, toastType || 'info');
+  }
+});
+</script>
+
 {% endblock content %}

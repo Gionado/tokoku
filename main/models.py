@@ -30,4 +30,4 @@ class Product(models.Model):
     # def increment_views(self):
     #     self.product_views += 1
     #     self.save()
-
+    

@@ -9,21 +9,19 @@
 <div class="bg-orange-50 w-full min-h-screen">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
-    <!-- Back Navigation -->
     <div class="mb-6">
       <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
         ← Back to Home
       </a>
     </div>
     
-    <!-- Form -->
     <div class="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 form-style">
       <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Edit Product</h1>
         <p class="text-gray-600">Update your football products</p>
       </div>
       
-      <form method="POST" class="space-y-6">
+      <form id="editProductForm" class="space-y-6">
         {% csrf_token %}
         {% for field in form %}
           <div>
@@ -39,6 +37,7 @@
             {% for error in field.errors %}
               <p class="mt-1 text-sm text-red-600">{{ error }}</p>
             {% endfor %}
+            <p id="error-{{ field.id_for_label }}" class="mt-1 text-sm text-red-600"></p>
           </div>
         {% endfor %}
         
@@ -54,4 +53,68 @@
     </div>
   </div>
 </div>
+
+<script>
+  const form = document.getElementById('editProductForm');
+  const productId = window.location.pathname.split('/').slice(-2, -1)[0];
+  const endpoint = `{% url 'main:edit_product_ajax' 0 %}`.replace('0', productId);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent default form submission (page reload)
+
+    // Clear previous errors
+    document.querySelectorAll('[id^="error-"]').forEach(el => el.textContent = '');
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        // The CSRF token is already included in the FormData, so this is optional
+        // but good practice to include in headers for security.
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+      });
+      
+      const data = await response.json();
+
+      if (data.success) {
+        showToast(data.message); // Use the showToast function from base.html
+        window.location.href = "{% url 'main:show_main' %}"; // Redirect after success
+      } else {
+        // Display validation errors from the server
+        if (data.errors) {
+          for (const fieldName in data.errors) {
+            const errorElement = document.getElementById(`error-${fieldName}`);
+            if (errorElement) {
+              errorElement.textContent = data.errors[fieldName].join(', ');
+            }
+          }
+        }
+        showToast(data.message, 'error');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showToast('An unexpected error occurred. Please try again later.');
+    }
+  });
+
+  function showToast(message, type = 'success', duration = 3000) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+
+    // Set background color based on type
+    toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white max-w-sm transition-opacity duration-300 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'}`;
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    toast.style.opacity = 1;
+
+    setTimeout(() => {
+      toast.style.opacity = 0;
+      setTimeout(() => toast.classList.add('hidden'), 500);
+    }, duration);
+  }
+</script>
 {% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>TokoKu</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="bg-white w-full pt-16 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Latest Football Product</h1>
+      <p class="text-gray-600">Stay updated with the latest football products</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-white rounded-lg border border-yellow-900 p-4">
+      <div class="flex space-x-3 mb-4 sm:mb-0">
+        <a href="?" class="{% if request.GET.filter == 'all' or not request.GET.filter  %} bg-yellow-900 text-white{% else %}bg-orange-50 text-gray-700 border border-yellow-900{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-yellow-900 hover:text-white">
+          All Products
+        </a>
+        <a href="?filter=my" class="{% if request.GET.filter == 'my' %} bg-yellow-900 text-white{% else %}bg-orange-50 text-gray-700 border border-yellow-900{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-yellow-900 hover:text-white">
+          My Products
+        </a>
+        <a href="?filter=featured" class="{% if request.GET.filter == 'featured' %} bg-yellow-900 text-white{% else %}bg-orange-50 text-gray-700 border border-yellow-900{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-yellow-900 hover:text-white">
+          Featured Products
+        </a>
+      </div>
+      {% if user.is_authenticated %}
+        <div class="text-sm text-gray-500">
+          Last login: {{ last_login }}
+        </div>
+      {% endif %}
+    </div>
+
+    <button
+    onclick="showToast('Sample Title', 'This is a sample message for the toast notification.')"
+    >
+     Click to Show Toast
+  </button>
+
+    <!-- Product Grid -->
+    {% if not product_list %}
+      <div class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+        <div class="w-32 h-32 mx-auto mb-4">
+          <img src="{% static 'image/no-product.png' %}" alt="No product available" class="w-full h-full object-contain">
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No product found</h3>
+        <p class="text-gray-500 mb-6">Be the first to sell football product with the community.</p>
+        <a href="{% url 'main:create_product' %}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+          Create Product
+        </a>
+      </div>
+    {% else %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in product_list %}
+          {% include 'card_product.html' with product=product %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}
